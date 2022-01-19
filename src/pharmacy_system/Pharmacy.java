@@ -3,7 +3,7 @@ package pharmacy_system;
 public class Pharmacy {
 
 	private String name;
-	private double licence_number;
+	private int licence_number;
 	private String address;
 	private String contact_number;
 	
@@ -17,12 +17,12 @@ public class Pharmacy {
 		return this.name;
 	}
 	
-	public void setlicence(double licence_number) {
+	public void setlicence(int licence_number) {
 		this.licence_number = licence_number;
 	}
 	
 	public String getndc() {
-		return "Licence number of the pharmacy is" + this.licence_number;
+		return ""+this.licence_number;
 	}
 	
 	public void setaddress(String address) {
@@ -30,7 +30,7 @@ public class Pharmacy {
 	}
 	
 	public String getaddress() {
-		return "address is " + this.address;
+		return this.address;
 	}
 	
 	public void setcontact(String contact_number) {
@@ -38,6 +38,6 @@ public class Pharmacy {
 	}
 	
 	public String getcontact() {
-		return "Contact number is " + this.contact_number;
+		return this.contact_number;
 	}
 }

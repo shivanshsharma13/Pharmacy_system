@@ -15,7 +15,7 @@ public class Prescriber {
 	}
 	
 	public String getname() {
-		return "Prescriber's name is " + this.first_name + " " + this.last_name;
+		return this.first_name + " " + this.last_name;
 	}
 	
 	public void setDEA(String DEA_number) {
@@ -23,7 +23,7 @@ public class Prescriber {
 	}
 	
 	public String getndc() {
-		return "DEA number of the doctor is" + this.DEA_number;
+		return this.DEA_number;
 	}
 	
 }

@@ -7,6 +7,7 @@ public class Drug {
 	private String name;
 	private String ndc_number;
 	private String brand;
+
 	
 //	Using setters and getters for providing the value
 	public void setname(String name) {
@@ -22,7 +23,7 @@ public class Drug {
 	}
 	
 	public String getndc() {
-		return "Ndc number of this medicine is"+this.ndc_number;
+		return this.ndc_number;
 	}
 	
 	public void setbrand(String brand) {
@@ -30,7 +31,7 @@ public class Drug {
 	}
 	
 	public String getbrand() {
-		return "Brand of this medicine is "+this.brand;
+		return this.brand;
 	}
 	
 }
