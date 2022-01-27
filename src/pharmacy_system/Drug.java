@@ -1,4 +1,6 @@
 package pharmacy_system;
+import java.util.List;
+
 
 public class Drug {
 
@@ -7,11 +9,14 @@ public class Drug {
 	private String name;
 	private String ndc_number;
 	private String brand;
+	private int order_drug;
+
 
 	
 //	Using setters and getters for providing the value
 	public void setname(String name) {
 		this.name = name;
+			
 	}
 	
 	public String getname() {

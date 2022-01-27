@@ -22,14 +22,21 @@ public class Main {
 		
 //		Drug
 		Drug d = new Drug();
+
 		d.setname("Combiflame");
-		d.setndc("23X4544ffg");
-		
-		System.out.println(d.getname());
-		System.out.println(d.getndc());
+		d.setname("com");
+		d.setname("com");
+//		d.setndc("23X4544ffg");
+//		
+//		System.out.println(d.getname());
+//		System.out.println(d.getndc());
 		
 //		p.setpatient("Shivansh", "sharma", "13/10/2000");
 //		System.out.println(p.getpatient());
+		
+		
+		
+		
 	}
 	
 }
