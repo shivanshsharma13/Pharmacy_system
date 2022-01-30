@@ -27,49 +27,18 @@ public class Doctor  extends JFrame{
 	JButton addbtn;
 	JTextField f_name;
 	JTextField l_name;
-	
-	
-//	public ArrayList listdoc() {
-//		
-////		Already existing
-//		p.setname("Shivanh", "SHarma");
-//		list.add(p.getname());
-//		p.setname("rahul", "raj");
-//		list.add(p.getname());
-//		
-//		return list;
-//	}
-	
-	
-//	public void addrow() {
-//		DefaultTableModel model = new DefaultTableModel();
-//		ArrayList<String>list = listdoc();
-//		Object raw[] = new Object[2];
-//		for(int i=0;i<list.size();i++) {
-//			raw[0] = list.get(i);
-//			model.addRow(raw);
-//		}
-//	}
+	JTextField dea_number;
 	
 
 	Doctor(){
-
-		ArrayList<Prescriber> list = new ArrayList<Prescriber>();
-		Prescriber p1 = new Prescriber();
-		p1.setname("Shivansh", "Sharma");
-		Prescriber p2 = new Prescriber();
-		Prescriber p3 = new Prescriber();
-		Prescriber p4 = new Prescriber();
-		
-		
-		
 //		String info[][] = {{p.getname(),p.getname()}};
 		
 		
 		JTable table = new JTable();
 		DefaultTableModel model = new DefaultTableModel();
-		Object[] col = {"First Name","Last Name"};
-		Object[] row = new Object[2];
+		Object[] col = {"First Name","Last Name","Dea Number"};
+		Object[] row = new Object[3];
+		
 		model.setColumnIdentifiers(col);
 		table.setModel(model);
 		JScrollPane sc = new JScrollPane();
@@ -82,6 +51,8 @@ public class Doctor  extends JFrame{
 		f_name.setPreferredSize(new Dimension(150,30));
 		l_name = new JTextField();
 		l_name.setPreferredSize(new Dimension(150,30));
+		dea_number = new JTextField();
+		dea_number.setPreferredSize(new Dimension(150,30));
 		
 		addbtn = new JButton("add");
 		addbtn.setFocusable(false);
@@ -94,10 +65,12 @@ public class Doctor  extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				row[0] = f_name.getText();
 				row[1] = l_name.getText();
+				row[2] = dea_number.getText();
 				model.addRow(row);
 				
 				f_name.setText("");
 				l_name.setText("");
+				dea_number.setText("");
 			}
 		});
 		
@@ -109,7 +82,6 @@ public class Doctor  extends JFrame{
 		searchbtn.addActionListener( new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String str = f_name.getText();
-			
 				TableRowSorter<DefaultTableModel> trs = new TableRowSorter<>(model);
 				table.setRowSorter(trs);
 				trs.setRowFilter(RowFilter.regexFilter(str));
@@ -118,9 +90,17 @@ public class Doctor  extends JFrame{
 		});
 
 		
+		JLabel first = new JLabel("First name");
+		JLabel last = new JLabel("Last name");
+		JLabel deanumber = new JLabel("DEA number");
+		
 		JPanel searchpanel = new JPanel(new GridLayout(4,1));
+		searchpanel.add(first);
 		searchpanel.add(f_name);
+		searchpanel.add(last);
 		searchpanel.add(l_name);
+		searchpanel.add(deanumber);
+		searchpanel.add(dea_number);
 		searchpanel.add(searchbtn);
 		searchpanel.add(addbtn);
 //		searchpanel.setBackground(Color.red);
@@ -129,20 +109,11 @@ public class Doctor  extends JFrame{
 	
 	
 		
-		JPanel bpanel = new JPanel();
+		JPanel bpanel = new JPanel(new GridLayout());
 		bpanel.add(sc);
 //		bpanel.setBackground(Color.blue);
 		
-
-		
-		
-		
-		
-		
-		
-		JLabel label = new JLabel();
-		label.setText("Welcome to doctor page");
-		label.setBounds(0,0,500,500);
+		JLabel label = new JLabel("First name");
 		
 		
 		this.setVisible(true);
@@ -152,7 +123,6 @@ public class Doctor  extends JFrame{
 		this.setLayout(new GridLayout(3,1));
 //		this.add(label);
 		this.add(searchpanel);
-		
 		this.add(bpanel);
 		
 		

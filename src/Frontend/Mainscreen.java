@@ -1,5 +1,6 @@
 package Frontend;
 
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -44,7 +45,7 @@ public class Mainscreen implements ActionListener{
 		screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		screen.setVisible(true);
 		screen.setSize(600,400);
-		screen.setLayout(null);
+		screen.setLayout(new GridLayout(4,1));
 		screen.add(label);
 		screen.add(doc);
 		screen.add(drug);

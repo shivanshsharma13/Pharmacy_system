@@ -10,6 +10,7 @@ public class Drug {
 	private String ndc_number;
 	private String brand;
 	private int order_drug;
+	
 
 
 	
