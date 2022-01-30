@@ -20,6 +20,11 @@ public class Main {
 //		p.display();
 		
 		
+		Prescriber p = new Prescriber();
+		p.setname("Shivansh", "Sharma");
+		p.setDEA("2sdfsdf3");
+		list.add(p.getname());
+		
 //		Drug
 		Drug d = new Drug();
 

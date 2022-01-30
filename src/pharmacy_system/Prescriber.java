@@ -1,5 +1,7 @@
 package pharmacy_system;
 
+import java.util.ArrayList;
+
 public class Prescriber {
 
 //	Creating the properties for the class with the private attributes
@@ -8,15 +10,21 @@ public class Prescriber {
 	private String DEA_number;
 	
 	
+	
 //	Using setters and getters for providing the value
 	public void setname(String first_name, String last_name) {
 		this.first_name = first_name;
 		this.last_name = last_name;
 	}
 	
-	public String getname() {
-		return this.first_name + " " + this.last_name;
+	public String getfname() {
+		return this.first_name;
 	}
+	
+	public String getlname() {
+		return this.last_name;
+	}
+	
 	
 	public void setDEA(String DEA_number) {
 		this.DEA_number = DEA_number;
@@ -24,6 +32,13 @@ public class Prescriber {
 	
 	public String getndc() {
 		return this.DEA_number;
+	}
+
+	public void setname(ArrayList<String> fi_name, ArrayList<String> la_name) {
+		// TODO Auto-generated method stub
+		fi_name.add(this.first_name);
+		la_name.add(this.last_name);
+		
 	}
 	
 }
