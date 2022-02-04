@@ -4,39 +4,99 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.RowFilter;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
+import pharmacy_system.Drugs;
 import pharmacy_system.Pharmacy;
 
 public class Stores extends JFrame{
-	
-	
-	ArrayList<Pharmacy>Store_list;
-	String header[] = new String[] {"Name", "Licence number", "address", "Contact number"};
-	DefaultTableModel dtm;
-	int row, col;
-	
-	
+
+
 	JButton searchbtn;
 	JButton addbtn;
-	JTextField name;
+	JTextField id;
+	JTextField storename;
 	JTextField lic;
-	JTextField add;
-	JTextField contact;
+	JComboBox contact;
+
+	//		DB stuff
+	Connection c = null;
+	Dbconn db = new Dbconn();
+
+	public ArrayList<Pharmacy> Fetch() throws Exception{
+
+		ArrayList<Pharmacy> d = new ArrayList<Pharmacy>();
+		c = db.con();
+		String query = "select s.id,s.store_name, c.chain_name, s.ncpdp_number from store s left JOIN chain c ON c.id = s.chain_id";
+		Statement st = c.createStatement();
+		ResultSet rs = st.executeQuery(query);
+
+		while(rs.next()){
+			Pharmacy obj = new Pharmacy();
+			obj.setId(rs.getInt(1));
+			obj.setName(rs.getString(2));
+			obj.setChain_id(rs.getString(3));
+			obj.setLicence_number(rs.getInt(4));
+			d.add(obj);
+		}
+		return d;
+	}
+
+
+	public ArrayList<String> chains() throws Exception{
+		c = db.con();
+		String query = "select chain_name from chain";
+		Statement st = c.createStatement();
+		ResultSet rs = st.executeQuery(query);
+		ArrayList<String> ch = new ArrayList<String>();
+		while(rs.next()){
+			ch.add(rs.getString(1));
+		}
+		return ch;
+	}
+
+
+	public int chain_ids(String ch) throws Exception{
+		c = db.con();
+		String query = "select id from chain where chain_name= " +'"'+ ch+'"';
+		Statement st = c.createStatement();
+		ResultSet rs = st.executeQuery(query);
+		rs.next();
+		int a = rs.getInt(1);
+		return a;
+	}
+
+
+	public void fire(int id, String store_name, int chain_id, String ncpdp_number) throws Exception{
+		c = db.con();
+		String query = "insert into store values(?,?,?,?)";
+
+		PreparedStatement st = c.prepareStatement(query);
+
+		st.setInt(1,id);
+		st.setString(2,store_name);
+//		st.setInt(3,chain_id);
+		st.setInt(3,chain_id);
+		st.setString(4,ncpdp_number);
+		st.executeUpdate();
+		st.close();
+		c.close();
+	}
 	
 	
-	Stores(){
+
+
+	
+	
+	Stores() throws Exception {
 
 //		JLabel label = new JLabel();
 //		label.setText("Welcome to Stores page");
@@ -51,9 +111,10 @@ public class Stores extends JFrame{
 		
 		
 		DefaultTableModel model = new DefaultTableModel();
-		Object[] col = {"Store Name","Licence Number", "Address","Contact number"};
+		Object[] col = {"Store id","Store name", "chain", "Licence number"};
 		Object[] row = new Object[4];
-		
+		ArrayList<Pharmacy> ph = Fetch();
+
 		model.setColumnIdentifiers(col);
 		logs.setModel(model);
 		JScrollPane sc = new JScrollPane();
@@ -62,20 +123,21 @@ public class Stores extends JFrame{
 		
 		JPanel logpanel = new JPanel(new GridLayout());
 		logpanel.add(sc);
-		
 
-		
-		
-		
-		name = new JTextField();
-		name.setPreferredSize(new Dimension(150,30));
+
+		ArrayList<String> chains = chains();
+
+		id = new JTextField();
+		id.setPreferredSize(new Dimension(150,30));
+		storename = new JTextField();
+		storename.setPreferredSize(new Dimension(150,30));
 		lic = new JTextField();
 		lic.setPreferredSize(new Dimension(150,30));
-		add = new JTextField();
-		add.setPreferredSize(new Dimension(150,30));
-		contact = new JTextField();
+		contact = new JComboBox(chains.toArray());
 		contact.setPreferredSize(new Dimension(150,30));
-		
+
+
+
 		addbtn = new JButton("add");
 		addbtn.setFocusable(false);
 		addbtn.setSize(20,20);
@@ -85,51 +147,41 @@ public class Stores extends JFrame{
 		
 		addbtn.addActionListener( new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				row[0] = name.getText();
-				row[1] = lic.getText();
-				row[2] = add.getText();
-				row[3] = contact.getText();
+				row[0] = id.getText();
+				row[1] = storename.getText();
+				row[2] = contact.getSelectedItem().toString();
+				row[3] = lic.getText();
 				model.addRow(row);
-				
-				name.setText("");
+
+				try {
+					fire(Integer.parseInt(id.getText()),storename.getText(),chain_ids(contact.getSelectedItem().toString()),lic.getText());
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+
+				id.setText("");
+				storename.setText("");
 				lic.setText("");
-				add.setText("");
-				contact.setText("");
+
+
 			}
 		});
 		
 		searchbtn = new JButton("Search");
 		searchbtn.setFocusable(false);
 		searchbtn.setSize(20,20);
-		
-		
-//		name.addKeyListener(new KeyListener() {
-//			
-//			@Override
-//			public void keyTyped(KeyEvent e) {
-//				String str = name.getText();
-//				TableRowSorter<DefaultTableModel> trs = new TableRowSorter<>(model);
-//				logs.setRowSorter(trs);
-//				trs.setRowFilter(RowFilter.regexFilter(str));
-//				
-//			}
-//			
-//			@Override
-//			public void keyReleased(KeyEvent e) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//			
-//			@Override
-//			public void keyPressed(KeyEvent e) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//		});
+
+		for(int i=0;i<ph.size();i++){
+			row[0] = ph.get(i).getId();
+			row[1] = ph.get(i).getName();
+			row[2] = ph.get(i).getChain_id();
+			row[3] = ph.get(i).getLicence_number();
+			model.addRow(row);
+		}
 		
 		searchbtn.addActionListener( new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String str = name.getText();
+				String str = storename.getText();
 				TableRowSorter<DefaultTableModel> trs = new TableRowSorter<>(model);
 				logs.setRowSorter(trs);
 				trs.setRowFilter(RowFilter.regexFilter(str));
@@ -138,21 +190,21 @@ public class Stores extends JFrame{
 		});
 
 		
-		JLabel lname = new JLabel("Store name");
-		JLabel llic = new JLabel("Licence number");
-		JLabel ladd = new JLabel("address");
-		JLabel lcontact = new JLabel("Contact");
+		JLabel ids = new JLabel("id");
+		JLabel storenames = new JLabel("Store name");
+		JLabel lics = new JLabel("Licence number");
+		JLabel chs = new JLabel("Chain");
 		
 		
 		
-		JPanel searchpanel = new JPanel(new GridLayout(5,1));
-		searchpanel.add(lname);
-		searchpanel.add(name);
-		searchpanel.add(llic);
+		JPanel searchpanel = new JPanel(new GridLayout(6,1));
+		searchpanel.add(ids);
+		searchpanel.add(id);
+		searchpanel.add(storenames);
+		searchpanel.add(storename);
+		searchpanel.add(lics);
 		searchpanel.add(lic);
-		searchpanel.add(ladd);
-		searchpanel.add(add);
-		searchpanel.add(lcontact);
+		searchpanel.add(chs);
 		searchpanel.add(contact);
 		searchpanel.add(searchbtn);
 		searchpanel.add(addbtn);

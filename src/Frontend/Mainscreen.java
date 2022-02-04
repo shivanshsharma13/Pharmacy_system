@@ -56,16 +56,28 @@ public class Mainscreen implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == doc) {
-			
-			Doctor d = new Doctor();
+
+			try {
+				Doctor d = new Doctor();
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
 		}
 		
 		if(e.getSource() == drug) {
-			Drug dr = new Drug();
+			try {
+				Drug dr = new Drug();
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
 		}
 		
 		if(e.getSource() == store) {
-			Stores st = new Stores();
+			try {
+				Stores st = new Stores();
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
 		}
 		
 	}

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Prescriber {
 
 //	Creating the properties for the class with the private attributes
+	private int id;
 	private String first_name;
 	private String last_name;
 	private String DEA_number;
@@ -12,8 +13,21 @@ public class Prescriber {
 	
 	
 //	Using setters and getters for providing the value
-	public void setname(String first_name, String last_name) {
+
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setfname(String first_name) {
 		this.first_name = first_name;
+	}
+
+	public void setlname(String last_name){
 		this.last_name = last_name;
 	}
 	
